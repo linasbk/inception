@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  nginx:
+    build: requirements/nginx
+    ports:
+      - "443:443"
+    container_name: nginx
+    restart: always
+    # after the machine reboot =>always
+  mariadb:
+    build: requirements/mariadb
+    depends_on:
+      - nginx
+    env_file:
+      - .env
+    container_name: mariadb
+    restart: always
+  wordpress:
+    build: requirements/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    container_name: wordpress
+    restart: always
+# docker-compose up --build
