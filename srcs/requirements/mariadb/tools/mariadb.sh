@@ -1,22 +1,18 @@
 #!/bin/sh
-MYSQL_DATABASE="wordpress"
-MYSQL_USER="lina"
-MYSQL_PASSWORD="lina12"
-MYSQL_ROOT_PASSWORD="lina1234"
-
 # MariaDB Config
+
+# echo "port = 3306" >> /etc/mysql/mariadb.conf.d/50-server.cnf
+sed -i "s|# port = 3306|port = 3306|1" /etc/mysql/mariadb.cnf
+sed -i "s/127.0.0.1/0.0.0.0/1" /etc/mysql/mariadb.conf.d/50-server.cnf
+
 service mariadb start
-sleep 5
-if [ -d "/var/lib/mysql/${MYSQL_DATABASE}" ]
-then 
-	echo "Database already exists"
-else
-    mysql -u root -e "CREATE DATABASE \`${MYSQL_DATABASE}\` ;"
-    mysql -u root -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' ;"
-    mysql -u root -e "GRANT ALL ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' ;"
-    mysql -u root -e "FLUSH PRIVILEGES;"
-    echo "port = 3306" >> /etc/mysql/mariadb.conf.d/50-server.cnf
-    sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mariadb.conf.d/50-server.cnf
-fi
+
+mysqladmin -u root password "${MYSQL_ROOT_PASSWORD}"
+
+mariadb -e "CREATE DATABASE \`${MYSQL_DATABASE}\` ;"
+mariadb -e "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' ;"
+mariadb -e "GRANT ALL ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' ;"
+mariadb -e "FLUSH PRIVILEGES;"
+
 service mariadb stop
 exec "$@"
