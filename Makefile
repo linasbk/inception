@@ -8,8 +8,8 @@ clean:
 	@docker compose -f srcs/docker-compose.yml down
 
 fclean: clean
-	@rm -rf /home/$(USER)/data/wordpress
-	@rm -rf /home/$(USER)/data/mariadb
+	@rm -rf /home/lsabik/data/wordpress
+	@rm -rf /home/lsabik/data/mariadb
 	@docker system prune -af --volumes
 
 
