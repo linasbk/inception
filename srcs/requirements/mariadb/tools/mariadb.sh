@@ -1,7 +1,5 @@
 #!/bin/sh
-# MariaDB Config
 
-# echo "port = 3306" >> /etc/mysql/mariadb.conf.d/50-server.cnf
 sed -i "s|# port = 3306|port = 3306|1" /etc/mysql/mariadb.cnf
 sed -i "s/127.0.0.1/0.0.0.0/1" /etc/mysql/mariadb.conf.d/50-server.cnf
 
