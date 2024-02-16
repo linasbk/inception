@@ -8,6 +8,6 @@ COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 RUN mkdir -p /run/php
 
-ENTRYPOINT [ "bash","/tmp/wordpress.sh" ]
+ENTRYPOINT [ "bash", "/tmp/wordpress.sh" ]
 
 CMD ["php-fpm7.4", "-F"]
